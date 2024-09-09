@@ -72,6 +72,6 @@ npm run lint
 
 ---
 ## 參考資料 reference
-[An Introduction to Web Workers](https://medium.com/@siobhanpmahoney/a-brief-introduction-to-web-workers-e5d6e39d9d28)
+[Web Workers](https://www.cythilya.tw/2018/07/18/web-workers/)
 
 [封裝 Web worker 的套件 - Comlink](https://ithelp.ithome.com.tw/articles/10337926)
