@@ -13,7 +13,7 @@
     >
       Start Worker
     </button>
-    <button v-else class="btn" @click="workerTerminate">
+    <button v-else class="btn btn-danger" @click="workerTerminate">
       Terminate Worker
     </button>
   </div>
@@ -88,7 +88,10 @@ async function workerFunc() {
   }
 }
 
-/** @func 終止執行續 */
+/** 
+ * @func 終止/移除執行序
+ * 如果呼叫這個方法就需要重新註冊才可以用 web worker
+ */
 function workerTerminate() {
   fib_workerTerminate("PENDING");
   heavy_workerTerminate("PENDING");

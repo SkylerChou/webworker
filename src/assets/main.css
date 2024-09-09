@@ -26,3 +26,6 @@ main{
   background-color: rgb(116, 116, 224);
   cursor: pointer;
 }
+.btn-danger{
+  background-color: rgb(247, 60, 60);
+}

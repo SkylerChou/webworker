@@ -1,10 +1,16 @@
+<!-- https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API -->
 <template>
   <label for="fib">費氏數列: </label>
   <input id="fib" type="number" v-model="term" min="1" />
-  
+
   <div class="btn__wrap">
-    <button class="btn btn-main" @click="baseFn">Main Thread</button>
-    <button class="btn btn-worker" @click="workerFn">Worker</button>
+    <button class="btn btn-main" @click="baseFn">Run on Main Thread</button>
+    <button v-if="!isHaveWoker" class="btn btn-worker" @click="workerFn">
+      Start Worker
+    </button>
+    <button v-else class="btn btn-danger" @click="workerTerminate">
+      Terminate Worker
+    </button>
   </div>
 
   <h2>執行續 (Thread): {{ runner }}</h2>
@@ -12,32 +18,33 @@
   <h2>費氏數列 (Result): {{ fibonnaciValue }}</h2>
 </template>
 <script setup lang="ts">
-import { ref, nextTick } from "vue";
+import { ref, nextTick, onUnmounted } from "vue";
 
 const worker_fibonacci: Worker = new Worker(
   new URL("../worker_fibonacci.ts", import.meta.url)
 );
 
-const _worker_heavyTask: Worker = new Worker(
+const worker_heavyTask: Worker = new Worker(
   new URL("../worker_heavyTask.ts", import.meta.url)
 );
+
+/** 是否有開 worker */
+const isHaveWoker = ref(false);
 
 /** 目前執行序 */
 const runner = ref<string>("");
 /** 排序結果 */
 const sortValue = ref<number[] | null>(null);
 /** 費氏數列結果 */
-const fibonnaciValue = ref<number>();
+const fibonnaciValue = ref<number | null>();
 /** inputValue */
 let term = ref<number | null>();
 
 // WORKER onmessage
 worker_fibonacci.onmessage = (event) => {
-  console.log(event);
   fibonnaciValue.value = event.data;
 };
-_worker_heavyTask.onmessage = (event) => {
-  console.log(event);
+worker_heavyTask.onmessage = (event) => {
   sortValue.value = event.data;
 };
 
@@ -59,6 +66,7 @@ function fibonacci(num: number): number {
 /** @func 點擊方法-在主執行序執行 */
 async function baseFn() {
   sortValue.value = null;
+  fibonnaciValue.value = null;
   await nextTick();
   sortValue.value = heavyTask();
   if (term.value) {
@@ -70,15 +78,31 @@ async function baseFn() {
 /** @func 點擊方法-開Work執行 */
 async function workerFn() {
   sortValue.value = null;
+  fibonnaciValue.value = null;
+  isHaveWoker.value = true;
   await nextTick();
   /**
    * WORKER postMessage
    * 因為無法直接使用，需要用 postMessage、onmessage 溝通
    */
-  _worker_heavyTask.postMessage("start");
+  worker_heavyTask.postMessage("start");
   if (term.value) {
     worker_fibonacci.postMessage(term.value);
   }
   runner.value = "Worker";
 }
+
+/**
+ * @func 終止/移除執行序
+ * 如果呼叫這個方法後續就無法使用 web worker
+ */
+function workerTerminate() {
+  worker_fibonacci.terminate();
+  worker_heavyTask.terminate();
+  isHaveWoker.value = false;
+}
+
+onUnmounted(() => {
+  workerTerminate();
+});
 </script>

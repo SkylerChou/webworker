@@ -4,8 +4,13 @@
   <input id="fib" type="number" v-model="term" min="1" />
 
   <div class="btn__wrap">
-    <button class="btn btn-main" @click="baseFn">Main Thread</button>
-    <button class="btn btn-worker" @click="workerFn">Worker</button>
+    <button class="btn btn-main" @click="baseFn">Run on Main Thread</button>
+    <button v-if="!isHaveWoker" class="btn btn-worker" @click="workerFn">
+      Start Worker
+    </button>
+    <button v-else class="btn btn-danger" @click="workerTerminate">
+      Terminate Worker
+    </button>
   </div>
 
   <h2>執行續 (Thread): {{ runner }}</h2>
@@ -14,18 +19,23 @@
 </template>
 <script setup lang="ts">
 import { useWebWorker } from "@vueuse/core";
-import { ref, watch, nextTick } from "vue";
+import { ref, watch, nextTick, onUnmounted } from "vue";
+
+/** 是否有開 worker */
+const isHaveWoker = ref(false);
 
 /** 輸入worker路徑時，注意要用絕對路徑 */
 const {
   data: fib_data,
   post: fib_post,
   worker: fib_worker,
+  terminate: fib_terminate,
 } = useWebWorker("/src/worker_fibonacci.ts");
 const {
   data: heavy_data,
   post: heavy_post,
   worker: heavy_worker,
+  terminate: heavy_terminate,
 } = useWebWorker("src/worker_heavyTask.ts");
 
 /** 目前執行序 */
@@ -62,6 +72,7 @@ function fibonacci(num: number): number {
 
 /** @func 點擊方法-在主執行序執行 */
 async function baseFn() {
+  fibonnaciValue.value = null;
   sortValue.value = null;
   await nextTick();
   sortValue.value = heavyTask();
@@ -79,7 +90,9 @@ heavy_worker.value!.onmessage = (event) => {
   sortValue.value = event.data;
 };
 
+/** @func 點擊方法-開Work執行 */
 async function workerFn() {
+  isHaveWoker.value = true;
   fibonnaciValue.value = null;
   sortValue.value = null;
   if (term.value) {
@@ -97,4 +110,18 @@ async function workerFn() {
 
   runner.value = "Worker";
 }
+
+/** 
+ * @func 終止/移除執行序
+ * 如果呼叫這個方法後續就無法使用 web worker
+ */
+function workerTerminate() {
+  fib_terminate();
+  heavy_terminate();
+  isHaveWoker.value = false;
+}
+
+onUnmounted(()=>{
+  workerTerminate()
+})
 </script>
