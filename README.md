@@ -1,8 +1,10 @@
 # Web Worker
 
-![Event model for web workers](image.png)
+![alt text](image.png)
 
-由於 Javascript 和 UI 事件在單一執行緒中運行，因此如果 js 方法過於肥大執行時間較長，UI 將無法更新並卡頓。
+JavaScript 通常在作業系統的 Main Thread 執行，但若把程式碼放在 Web Workers 就可另闢戰場-Worker Thread，兩條線互不影響，讓 JavaScript 在背景執行，並且兩線可由訊息溝通-使用 postMessage 發送訊息、onmessage 接收訊息。
+
+通常我們會將需要長時間運算且不含 Window 或 DOM Element 操作的程式碼放在 Web Workers，好處是不阻塞 Main Thread 而讓速度變快。
 
 ## 本範例的 Event model for web workers
 
