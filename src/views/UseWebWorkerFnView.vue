@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h1>VuwUse - useWebWorkerFn</h1>
+    <h1>VueUse - useWebWorkerFn</h1>
     <div>
       <Worker3 />
     </div>

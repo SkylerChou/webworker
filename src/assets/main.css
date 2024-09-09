@@ -24,4 +24,5 @@ main{
   border-color: transparent;
   color: #fff;
   background-color: rgb(116, 116, 224);
+  cursor: pointer;
 }

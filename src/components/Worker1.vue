@@ -1,6 +1,7 @@
 <template>
   <label for="fib">費氏數列: </label>
   <input id="fib" type="number" v-model="term" min="1" />
+  
   <div class="btn__wrap">
     <button class="btn btn-main" @click="baseFn">Main Thread</button>
     <button class="btn btn-worker" @click="workerFn">Worker</button>
@@ -81,7 +82,3 @@ async function workerFn() {
   runner.value = "Worker";
 }
 </script>
-
-<style scoped>
-
-</style>
