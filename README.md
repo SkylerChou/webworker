@@ -4,31 +4,13 @@
 
 由於 Javascript 和 UI 事件在單一執行緒中運行，因此如果 js 方法過於肥大執行時間較長，UI 將無法更新並卡頓。
 
-## 本範例的 web worker Event model for web workers
+## 本範例的 Event model for web workers
 
 ### worker_fibonacci
-```sequence
-Note left of Main Thread: Listening for message event
-Note left of Main Thread: Processing message 
-Main Thread->worker_fibonacci: Send message to worker
-Note right of Main Thread: message event
-Note right of worker_fibonacci: Processing message
-Note right of worker_fibonacci: message event
-worker_fibonacci->Main Thread: Send message to worker
-Note right of Main Thread: Listening for message event
-```
+![alt text](image-1.png)
 
 ### worker_heavyTask
-```sequence
-Note left of Main Thread: Listening for message event
-Note left of Main Thread: Processing message 
-Main Thread->worker_heavyTask: Send message to worker
-Note right of Main Thread: message event
-Note right of worker_heavyTask: Processing message
-Note right of worker_heavyTask: message event
-worker_heavyTask->Main Thread: Send message to worker
-Note right of Main Thread: Listening for message event
-```
+![alt text](image-2.png)
 
 ## worker1 - Web Workers API
 
@@ -46,6 +28,7 @@ Note right of Main Thread: Listening for message event
 
 封裝成更好用的方法，也是三種裡最簡化的寫法，也有狀態可以使用，
 worker terminate 之後也不會有 worker1、worker2 的問題 (無法再次使用)
+官方的例子看起來跟 comlink 差不多
 
 [VueUse - useWebWorkerFn](https://vueuse.org/core/useWebWorkerFn/)
 
