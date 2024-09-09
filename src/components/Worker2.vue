@@ -41,9 +41,9 @@ let term = ref<number | null>();
 watch(fib_data, (value) => {
   fibonnaciValue.value = value;
 });
-watch(heavy_data, (value) => {
-  sortValue.value = value;
-});
+// watch(heavy_data, (value) => {
+//   sortValue.value = value;
+// });
 
 /** @func 模擬大量排序-給主執行續使用邏輯的方法(跟worker的邏輯一樣的)*/
 function heavyTask() {
@@ -82,17 +82,19 @@ heavy_worker.value!.onmessage = (event) => {
 async function workerFn() {
   fibonnaciValue.value = null;
   sortValue.value = null;
-  await nextTick();
   if (term.value) {
     // WORKER postMessage - 方法一
     // fib_worker.value!.postMessage(term.value);
+
     // useUse - useWebWorker 包好的方法 - 方法二
     fib_post(term.value);
   }
   // WORKER postMessage - 方法一
   heavy_worker.value!.postMessage("start");
+
   // useUse - useWebWorker 包好的方法 - 方法二
   // heavy_post("start");
+
   runner.value = "Worker";
 }
 </script>
