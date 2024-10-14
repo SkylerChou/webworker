@@ -86,6 +86,7 @@ async function workerFunc() {
   if (term.value) {
     fibonnaciValue.value = await fib_workerFn(term.value);
   }
+  runner.value = "Worker";
 }
 
 /** 
