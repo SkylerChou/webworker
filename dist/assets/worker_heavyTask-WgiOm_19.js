@@ -1,0 +1,1 @@
+(function(){"use strict";function n(){const s=()=>Math.trunc(Math.random()*5e5),e=Array(5e6).fill(void 0).map(s);return e.sort(),e.slice(0,5)}self.onmessage=s=>{console.log("模擬大量排序");let e=n();self.postMessage(e)}})();
