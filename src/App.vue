@@ -1,7 +1,7 @@
 <template>
   <nav>
     <RouterLink to="/">Web Worker</RouterLink>|
-    <RouterLink to="/worker2">useWebWorker</RouterLink>|
+    <!-- <RouterLink to="/worker2">useWebWorker</RouterLink>| -->
     <RouterLink to="/worker3">useWebWorkerFn</RouterLink>
   </nav>
   <main>

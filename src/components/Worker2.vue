@@ -36,7 +36,7 @@ const {
   post: heavy_post,
   worker: heavy_worker,
   terminate: heavy_terminate,
-} = useWebWorker("src/worker_heavyTask.ts");
+} = useWebWorker("/src/worker_heavyTask.ts");
 
 /** 目前執行序 */
 const runner = ref<string>("");

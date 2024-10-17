@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const optons: RouterOptions = {
-  history: createWebHistory(),
+  history: createWebHistory('/webworker'),
   routes,
 }
 
