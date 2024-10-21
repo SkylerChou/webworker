@@ -12,4 +12,5 @@ import Worker3 from "@/components/Worker3.vue";
 </script>
 
 <style scoped>
+
 </style>

@@ -65,6 +65,7 @@ function fibonacci(num: number): number {
 
 /** @func 點擊方法-在主執行序執行 */
 async function baseFn() {
+  runner.value = "Main";
   sortValue.value = null;
   fibonnaciValue.value = null;
   await nextTick();
@@ -72,11 +73,11 @@ async function baseFn() {
   if (term.value) {
     fibonnaciValue.value = fibonacci(term.value);
   }
-  runner.value = "Main";
 }
 
 /** @func 點擊方法-開Work執行 */
 async function workerFn() {
+  runner.value = "Worker";
   sortValue.value = null;
   fibonnaciValue.value = null;
   isHaveWoker.value = true;
@@ -89,7 +90,6 @@ async function workerFn() {
   if (term.value) {
     worker_fibonacci.postMessage(term.value);
   }
-  runner.value = "Worker";
 }
 
 /**

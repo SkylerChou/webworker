@@ -68,6 +68,7 @@ function fibonacci(num: number): number {
 
 /** @func 點擊方法-在主執行序執行 */
 async function baseFunc() {
+  runner.value = "Main";
   sortValue.value = null;
   fibonnaciValue.value = null;
   await nextTick();
@@ -75,18 +76,17 @@ async function baseFunc() {
   if (term.value) {
     fibonnaciValue.value = fibonacci(term.value);
   }
-  runner.value = "Main";
 }
 
 /** @func 點擊方法-開Work執行 */
 async function workerFunc() {
+  runner.value = "Worker";
   sortValue.value = null;
   fibonnaciValue.value = null;
   sortValue.value = await heavy_workerFn();
   if (term.value) {
     fibonnaciValue.value = await fib_workerFn(term.value);
   }
-  runner.value = "Worker";
 }
 
 /** 
